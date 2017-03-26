@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	</head>
+	<body>
+		<h1 style="text-align: center; padding: 50px;">Astound</h1>
+		<div style="margin-left: 43%;padding-bottom: 50px;">
+			<input id="freq" style="" type="text">
+			<button id="button" type="submit">Submit</button>
+		</div>
+
+	</body>
+
+	<style>	
+		body {
+			font-family: "Open Sans";
+		}
+
+		.key {
+
+			color:green;
+			float:left;
+			padding:84px;
+			border: 1px solid #ccc;
+		}
+
+		.highlight {
+			color:white;
+			background-color: green;
+		}
+	</style>
+	<script>
+
+	var pianoNotes = {
+			"A": {
+				"freq": 440
+			},
+			"B": {
+				"freq": 493.88
+			},
+			"C": {
+				"freq": 261.6
+			},
+			"D": {
+				"freq": 293.66
+			},
+			"E": {
+				"freq": 329.63
+			},
+			"F": {
+				"freq": 349.23
+			},
+			"G": {
+				"freq": 392
+			}
+		}
+
+		
+		var pianoSounds = [];
+
+		
+
+		// console.log('brianwang');
+		// document.getElementById('button').onclick = function() {
+  //  			var freq = $("#freq").val();
+  //  			console.log(freq); 
+  //  			window.audioContext = new (window.AudioContext || window.webkitAudioContext)()
+		// 	var oscillator = window.audioContext.createOscillator();
+		// 	oscillator.frequency.value = freq;
+		//     oscillator.connect(window.audioContext.destination);
+		// 	// oscillator.noteOn(window.audioContext.currentTime);
+		// 	// oscillator.noteOff(window.audioContext.currentTime + 1.0);
+		// 	oscillator.start(0.2);
+  //  		}
+ 		window.audioContext = new (window.AudioContext || window.webkitAudioContext)()
+
+ 		function createPiano() {
+ 			var i = 0;
+ 			for(keyname in pianoNotes) {
+ 				var newobj = {};
+ 				newobj.keyname = keyname;
+ 				newobj.key = Key(keyname, pianoNotes[keyname].freq);
+ 				pianoSounds.push(newobj);
+ 				console.log(newobj);
+ 				pianoNotes[keyname].freq = i;i++;
+ 			}
+ 		}
+
+   		function Key(note, freq) {
+   			var newobj = {};
+   			var markup = document.createElement("div");
+   			markup.className = "key " + note;
+   			markup.innerHTML = '<span> ' + note + '</span>';
+   			document.body.appendChild(markup);
+   			this.markup = markup;
+   			newobj.sound = new Sound(freq);
+   			return newobj;
+   		};
+
+   		function Sound(freq) {
+   			this.oscillator = window.audioContext.createOscillator();
+   			this.playing = false;
+   			if (typeof freq != 'undefined') {
+   				this.freq = freq;
+   			} else {
+   				this.freq = 440;
+   			}
+
+   			this.oscillator.start(0);
+   		}
+
+   		Sound.prototype.play = function() {
+   			if(!this.playing) {
+   				this.playing = true;
+   			}
+   			this.oscillator.connect(audioContext.destination);
+   		}
+
+   		Sound.prototype.stop = function() {
+   			this.playing = false;
+   			this.oscillator.disconnect();
+   		}
+
+   		createPiano();
+
+   		var playKey = function (key) {
+   			pianoSounds[pianoNotes[key].freq].key.sound.play();
+   			var html = pianoSounds[pianoNotes[key].freq].key.markup;
+   			html.className = "key highlight " + note;
+   			pianoNotes[key].key.keySound.stop();
+   		}
+
+   		document.getElementById('button').onclick = function() {
+   			console.log(pianoNotes);
+   			console.log(pianoSounds);
+   			playKey("A");
+   		}
+
+		      
+	</script>
+</html>
