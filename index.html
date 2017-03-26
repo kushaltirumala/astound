@@ -7,7 +7,7 @@
 	<body>
 		<h1 style="text-align: center; padding: 50px;">Astound</h1>
 		<div style="margin-left: 43%;padding-bottom: 50px;">
-			<input id="freq" style="" type="text">
+			<input id="in" style="" type="text">
 			<button id="button" type="submit">Submit</button>
 		</div>
 
@@ -26,10 +26,12 @@
 			border: 1px solid #ccc;
 		}
 
-		.highlight {
+		.playing {
 			color:white;
 			background-color: green;
 		}
+
+		
 	</style>
 	<script>
 
@@ -59,7 +61,7 @@
 
 		
 		var pianoSounds = [];
-
+		var pressedTimeout;
 		
 
 		// console.log('brianwang');
@@ -91,51 +93,69 @@
    		function Key(note, freq) {
    			var newobj = {};
    			var markup = document.createElement("div");
-   			markup.className = "key " + note;
+   			markup.className = "key ";
+   			markup.setAttribute("id", note);
    			markup.innerHTML = '<span> ' + note + '</span>';
    			document.body.appendChild(markup);
-   			this.markup = markup;
    			newobj.sound = new Sound(freq);
    			return newobj;
    		};
 
    		function Sound(freq) {
-   			this.oscillator = window.audioContext.createOscillator();
    			this.playing = false;
-   			if (typeof freq != 'undefined') {
+   			if (typeof freq == 'undefined') {
    				this.freq = freq;
    			} else {
    				this.freq = 440;
    			}
 
-   			this.oscillator.start(0);
+   			//this.oscillator.start(0);
    		}
 
    		Sound.prototype.play = function() {
+   			var oscillator = window.audioContext.createOscillator();
    			if(!this.playing) {
    				this.playing = true;
    			}
-   			this.oscillator.connect(audioContext.destination);
+   			oscillator.connect(audioContext.destination);
+   			var currentTime = audioContext.currentTime;
+   			oscillator.start(currentTime);
+   			oscillator.stop(currentTime+0.1);
+   			this.playing = false;
    		}
 
-   		Sound.prototype.stop = function() {
+   		Sound.prototype.stop = function(key) {
    			this.playing = false;
-   			this.oscillator.disconnect();
+   			document.getElementById(key).className = "key";
    		}
 
    		createPiano();
 
    		var playKey = function (key) {
-   			pianoSounds[pianoNotes[key].freq].key.sound.play();
-   			var html = pianoSounds[pianoNotes[key].freq].key.markup;
-   			html.className = "key highlight " + note;
-   			pianoNotes[key].key.keySound.stop();
+   			var index = pianoNotes[key].freq;
+   			pianoSounds[index].key.sound.play();
+   			var sty = document.getElementById(key);
+   			sty.className += " playing";
+   			// sty.color = "white";
+   			// sty.backgroundColor = "green";
+   			//pianoSounds[index].key.sound.stop(key);
+   			window.clearTimeout(pressedTimeout);
+                pressedTimeout = window.setTimeout(function() {
+                	var temp = $("#"+key);
+                    $("#"+key).removeClass('playing');
+            	 }, 100);
+
    		}
 
    		document.getElementById('button').onclick = function() {
-   			console.log(pianoNotes);
-   			console.log(pianoSounds);
+   			var input = $("#in").val();
+   			// var reg = input.split('').map(Number);
+   			// console.log(reg);
+   			// for(var i = 0; i < reg.length; i++) {
+   			// 	playKey(pianoSounds[i]);
+   			// }
    			playKey("A");
+   			playKey("B");
    		}
 
 		      
