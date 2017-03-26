@@ -40,7 +40,7 @@
 				"freq": 440
 			},
 			"B": {
-				"freq": 493.88
+				"freq": 1000
 			},
 			"C": {
 				"freq": 261.6
@@ -103,19 +103,16 @@
 
    		function Sound(freq) {
    			this.playing = false;
-   			if (typeof freq == 'undefined') {
-   				this.freq = freq;
-   			} else {
-   				this.freq = 440;
-   			}
-
+   			this.freq = freq;
    			//this.oscillator.start(0);
    		}
 
    		Sound.prototype.play = function() {
    			var oscillator = window.audioContext.createOscillator();
+   			oscillator.frequency.value = this.freq;
    			if(!this.playing) {
    				this.playing = true;
+
    			}
    			oscillator.connect(audioContext.destination);
    			var currentTime = audioContext.currentTime;
@@ -139,7 +136,6 @@
    			// sty.color = "white";
    			// sty.backgroundColor = "green";
    			//pianoSounds[index].key.sound.stop(key);
-   			window.clearTimeout(pressedTimeout);
                 pressedTimeout = window.setTimeout(function() {
                 	var temp = $("#"+key);
                     $("#"+key).removeClass('playing');
@@ -149,13 +145,14 @@
 
    		document.getElementById('button').onclick = function() {
    			var input = $("#in").val();
-   			// var reg = input.split('').map(Number);
-   			// console.log(reg);
-   			// for(var i = 0; i < reg.length; i++) {
-   			// 	playKey(pianoSounds[i]);
-   			// }
-   			playKey("A");
-   			playKey("B");
+   			var reg = input.split('').map(Number);
+   			console.log(reg);
+   			for(var i = 0; i < reg.length; i++) {
+   				setTimeout( function () {
+   					playKey(pianoSounds[reg[i]].keyname)
+   				}, 500);
+   			}
+   			//playKey("A");
    		}
 
 		      
