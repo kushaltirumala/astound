@@ -7,10 +7,16 @@
 	</head>
 	<body>
 		<h1 style="text-align: center; padding: 50px;">Astound</h1>
+
+		<div style="text-align: center; margin-bottom: 40px;">
+			<h5>Recieve!</h5>
+
+		</div>
 		<div style="margin-left: 43%;padding-bottom: 50px;">
 			<input id="in" style="" type="text">
 			<button id="button" type="submit">Submit</button>
 		</div>
+
 
 	</body>
 
@@ -150,17 +156,50 @@
    			var reg = input.split('').map(Number);
    			console.log(reg);
    			var currentTime = window.audioContext.currentTime;
-   			var clock = new WAAClock(window.audioContext);
-   			for(var i = 0; i < reg.length; i++) {
-   				// playKey(pianoSounds[reg[i]].keyname, function() {
-   				clock.callbackAtTime(function() {
-   						playKey(pianoSounds[reg[i]].keyname);
-   				}, 1);
-   				// })
-   			}
-   			clock.start();
+   			//clock.start();
+   			var i =0;
+   			recursiveWAA(reg, i);
+
+
+   			
+   			// 	// })
+   			// }
+
+   			// var event = clock.setTimeout(function() {
+   			// 			playKey(pianoSounds[reg[0]].keyname);
+   			// 	}, 1);
+
+   			// var event = clock.setTimeout(function() {
+   			// 			playKey(pianoSounds[reg[1]].keyname);
+   			// 	}, 2);
+
+
+   			
+
    			//playKey("A");
    		}
+
+   		var nextNotetime = 0;
+
+   		function recursiveWAA(arr, i) { 
+   				// playKey(pianoSounds[reg[i]].keyname, function() {
+   				while(nextNotetime < window.audioContext.currentTime + 0.05) {
+
+   					nextNotetime+=0.1
+   					console.log ("i " + i);
+   					if(typeof pianoSounds[arr[i]] != 'undefined') {
+   						var temp = pianoSounds[arr[i]].keyname;
+   						playKey(temp);
+   						i++;
+   					}
+   				}
+
+   				window.setTimeout(function() {
+   					recursiveWAA(arr, i);
+   				}, 25.0);
+   			}
+
+   		
 
 		      
 	</script>
