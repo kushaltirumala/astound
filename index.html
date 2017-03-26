@@ -3,6 +3,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="WAAclock.js"></script>
 	</head>
 	<body>
 		<h1 style="text-align: center; padding: 50px;">Astound</h1>
@@ -140,18 +141,24 @@
                 	var temp = $("#"+key);
                     $("#"+key).removeClass('playing');
             	 }, 100);
-
    		}
+
+
 
    		document.getElementById('button').onclick = function() {
    			var input = $("#in").val();
    			var reg = input.split('').map(Number);
    			console.log(reg);
+   			var currentTime = window.audioContext.currentTime;
+   			var clock = new WAAClock(window.audioContext);
    			for(var i = 0; i < reg.length; i++) {
-   				setTimeout( function () {
-   					playKey(pianoSounds[reg[i]].keyname)
-   				}, 500);
+   				// playKey(pianoSounds[reg[i]].keyname, function() {
+   				clock.callbackAtTime(function() {
+   						playKey(pianoSounds[reg[i]].keyname);
+   				}, 1);
+   				// })
    			}
+   			clock.start();
    			//playKey("A");
    		}
 
