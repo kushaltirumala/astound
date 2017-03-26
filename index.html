@@ -217,6 +217,12 @@
    				analyser.fftSize = 2048;
    				analyser.connect( window.audioContext.destination );
 
+
+   				navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+				navigator.getUserMedia( {audio:true}, gotStream, function() {
+					console.log('error');
+				} );	
+
    				var count = 0;
    	 			while(listening) {
 	   				analyser.getFloatTimeDomainData( buf );
@@ -241,6 +247,7 @@
 				 }
 
 
+			
 
    			}
 
@@ -258,6 +265,19 @@
 			function centsOffFromPitch( frequency, note ) {
 				return Math.floor( 1200 * Math.log( frequency / frequencyFromNoteNumber( note ))/Math.log(2) );
 			}
+
+
+			function gotStream(stream) {
+			    
+
+			    // Create an AudioNode from the stream.
+			    var mediaStreamSource = window.audioContext.createMediaStreamSource( stream );
+
+			    // Connect it to the destination to hear yourself (or any other node for processing!)
+			    mediaStreamSource.connect( window.audioContext.destination );
+			}
+
+
 
 
 			var MIN_SAMPLES = 0;  // will be initialized when AudioContext is created.
@@ -324,6 +344,8 @@ function autoCorrelate( buf, sampleRate ) {
    				$("#in").attr('disabled', false);
    				listening = false;
    			}
+
+   			
 		      
 	</script>
 </html>
