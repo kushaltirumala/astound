@@ -9,7 +9,10 @@
 		<h1 style="text-align: center; padding: 50px;">Astound</h1>
 
 		<div style="text-align: center; margin-bottom: 40px;">
-			<h5>Recieve!</h5>
+			<button id="receivebutton" type="submit">Receive</button>
+			<button id="stopbutton" type="submit">Stop Receive!!</button>
+
+
 
 		</div>
 		<div style="margin-left: 43%;padding-bottom: 50px;">
@@ -178,6 +181,7 @@
 
    			//playKey("A");
    		}
+   		
 
    		var nextNotetime = 0;
 
@@ -201,6 +205,15 @@
 
    		
 
+   			//RECEIVE CODE
+   			document.getElementById('receivebutton').onclick = function() {
+   				console.log("started listening");
+   				$("#in").attr('disabled', true);
+   			}
+
+   			document.getElementById('stopbutton').onclick = function() {
+   				$("#in").attr('disabled', false);
+   			}
 		      
 	</script>
 </html>
