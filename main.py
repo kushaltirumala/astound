@@ -39,14 +39,15 @@ def display_beats(y, beats):
     # new_beats = beats.astype(int)
 
     i = 0
+    sys.stdout.write("\rBEAT NUMBER: %d" % 0)
     while current_time < total_time:
         # print "current time: ", int(current_time)
         # print "beats[i]: ", new_beats[i]
+        sys.stdout.flush()
         if round(current_time,4) == round(beats[i],4):
             i+= 1
             sys.stdout.write("\rBEAT NUMBER: %d" % i)
 
-        sys.stdout.flush()
 
         current_time = (time.time() - start_time) % 60 
 
