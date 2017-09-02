@@ -9,11 +9,10 @@ import librosa.display
 import matplotlib.style as ms
 ms.use('seaborn-muted')
 import IPython.display
+import random
 import sys
 
-
-
-
+rand = random.Random()
 
 def play_music(file_name):
     mixer.init()
@@ -38,15 +37,29 @@ def display_beats(y, beats):
 
     # new_beats = beats.astype(int)
 
+    #ASCII ART
+    art = """
+    # # # # # # # # # # # # # # # # # K U S H A L IS C O O L # # # 
+    SO IS HANSEN # # # # # # 
+    NO NO BUD """
+
     i = 0
-    sys.stdout.write("\rBEAT NUMBER: %d" % 0)
+    lines = 0
+    sys.stdout.write("\rSTARTING ASCII ART GENERATION: %d" % 0)
+    current_str=""
     while current_time < total_time:
+        turn = rand.randint(0,8)
         # print "current time: ", int(current_time)
         # print "beats[i]: ", new_beats[i]
         sys.stdout.flush()
         if round(current_time,4) == round(beats[i],4):
             i+= 1
-            sys.stdout.write("\rBEAT NUMBER: %d" % i)
+ 
+            current_str += art[i]
+
+            sys.stdout.write("\r"+current_str)
+            if "\n" in current_str:
+                current_str = ""
 
 
         current_time = (time.time() - start_time) % 60 
@@ -66,7 +79,7 @@ def draw_spect(y, sr):
 
 
 
-junky = 'junky_brockhampton.mp3'
+junky = 'story_of_oj.mp3'
 
 try:
     print ('LOADING MUSIC')
