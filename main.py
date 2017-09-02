@@ -33,9 +33,11 @@ def display_beats(y, beats):
     while current_time < total_time:
         # print "current time: ", int(current_time)
         # print "beats[i]: ", new_beats[i]
-        if round(current_time,5) == round(beats[i],5):
-            print "beat at time: ", round(current_time, 4)
-            i+= 1
+        if i < len(beats):
+            if round(current_time,5) == round(beats[i],5):
+                i+= 1
+        else:
+            break
 
         current_time = (time.time() - start_time) % 60 
 
