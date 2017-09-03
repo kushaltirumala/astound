@@ -39,9 +39,7 @@ def display_beats(y, beats):
 
     #ASCII ART
     art = """
-    # # # # # # # # # # # # # # # # # K U S H A L IS C O O L # # # 
-    SO IS HANSEN # # # # # # 
-    NO NO BUD """
+    # # # # # # # # # # # # # # # # # ASCIII ART HERE # # #  """
 
     i = 0
     lines = 0
